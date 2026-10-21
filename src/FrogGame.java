@@ -11,7 +11,7 @@ public class FrogGame {
 
         IO.println("W - Pular para frente\nS - Pular para baixo\nQ - Sair\n");
 
-        desenharTabuleiro(frog);
+        drawBoard(frog);
 
         
         while(!direction.equals("q")){
@@ -22,39 +22,29 @@ public class FrogGame {
             direction = scanner.next().toLowerCase();
             
             if (direction.equals("q")) {
+
                 IO.println("Saindo do jogo...");
+
                 break;
-            }
-            else if (direction.equals("w")) {
+
+            } else if (direction.equals("w") || direction.equals("s")) {
 
                 int posicaoAnterior = frog;
 
-                frog = frogMoveUp(frog);
+                frog = frogMove(frog, direction);
 
-                if(posicaoAnterior != frog){
+                displayResult(frog, direction, posicaoAnterior);
 
-                    IO.println("o sapo pulou para frente e está na linha " + frog);
+                if(hasMoved(posicaoAnterior, frog)){
 
-                    desenharTabuleiro(frog);
-                
-                }
-
-            } else if (direction.equals("s")) {
-
-                int posicaoAnterior = frog;
-
-                frog = frogMoveDown(frog);
-
-                if(posicaoAnterior != frog){
-
-                    IO.println("o sapo pulou para baixo e está na linha " + frog);
-            
-                    desenharTabuleiro(frog);
+                    drawBoard(frog);
 
                 }
 
             } else {
+
                 System.out.println("Comando inválido");
+
             }
 
         }
@@ -65,9 +55,7 @@ public class FrogGame {
     static int frogMoveUp(int frog){
         if(frog > 0){
             frog = frog - 1;
-        } else {
-            IO.println("o sapo não pode pular para frente");
-        }
+        } 
         
         return frog;
     }
@@ -75,14 +63,32 @@ public class FrogGame {
     static int frogMoveDown(int frog){
         if(frog < 3){
             frog = frog + 1;
-        } else {
-            IO.println("o sapo não pode pular para baixo");
-        }
+        } 
 
         return frog;
     }
+
+    static int frogMove(int frog, String direction){
+
+        if(direction.equals("w")){
+
+            return frogMoveUp(frog);
+            
+        } else if(direction.equals("s")){
+
+            return frogMoveDown(frog);
+
+        }
+        
+        return frog;
+    }
+
+    static boolean hasMoved(int posicaoAnterior, int frog){
+        
+        return posicaoAnterior != frog;
+    }
     
-    static void desenharTabuleiro(int frog){
+    static void drawBoard(int frog){
         
         for(int linha = 0; linha < 4; linha++){
             if(linha == frog){
@@ -95,5 +101,34 @@ public class FrogGame {
         }
 
     }
+
+    static void displayResult(int frog, String direction, int posicaoAnterior){
+        if(hasMoved(posicaoAnterior, frog)){
+            if(direction.equals("w")){
+
+                IO.println("o sapo pulou para frente e está na linha " + frog);
+
+            } else if(direction.equals("s")){
+
+                IO.println("o sapo pulou para baixo e está na linha " + frog);
+
+            }
+
+        
+        } else {
+
+            if(direction.equals("w")){
+
+                IO.println("o sapo não pode pular para frente");
+
+            } else if(direction.equals("s")){
+
+                IO.println("o sapo não pode pular para baixo");
+
+            }
+
+        }
+    }
+    
 
 }
