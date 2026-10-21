@@ -1,0 +1,10 @@
+.git
+.gitignore
+*.md
+.dockerignore
+Dockerfile
+out/
+*.class
+.idea/
+.vscode/
+*.iml
